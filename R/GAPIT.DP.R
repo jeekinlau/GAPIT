@@ -69,7 +69,7 @@ myGenotype<-GAPIT.Genotype(G=G,GD=GD,GM=GM,KI=KI,PCA.total=PCA.total,kinship.alg
                 LD.chromosome=LD.chromosome,LD.location=LD.location,LD.range=LD.range,PCA.legend=PCA.legend,
                 GP=GP,GK=GK,bin.size=NULL,inclosure.size=NULL, WS0=WS0,Aver.Dis=Aver.Dis,
                 sangwich.top=sangwich.top,sangwich.bottom=sangwich.bottom,GTindex=NULL,file.output=file.output, 
-                Create.indicator = Create.indicator, Major.allele.zero = Major.allele.zero,Geno.View.output=Geno.View.output,PCA.col=PCA.col,PCA.3d=PCA.3d)
+                Create.indicator = Create.indicator, Major.allele.zero = Major.allele.zero,Geno.View.output=Geno.View.output,PCA.col=PCA.col,PCA.3d=PCA.3d,ncpus=ncpus)
 
 # }
 

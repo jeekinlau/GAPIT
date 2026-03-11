@@ -12,7 +12,7 @@ function(G=NULL,GD=NULL,GM=NULL,KI=NULL,
   bin.size = 1000,inclosure.size = 100,
   sangwich.top=NULL,sangwich.bottom=NULL,PCA.legend=NULL,
   file.output=TRUE,kinship.cluster="average",NJtree.group=NULL,NJtree.type=c("fan","unrooted"),
-  Create.indicator = FALSE, Major.allele.zero = FALSE,Geno.View.output=TRUE){
+  Create.indicator = FALSE, Major.allele.zero = FALSE,Geno.View.output=TRUE, ncpus=1){
 #Object: To unify genotype and calculate kinship and PC if required:
 #       1.For G data, convert it to GD and GI
 #       2.For GD and GM data, nothing change 
@@ -158,7 +158,7 @@ if(!is.null(G))
   Memory=GAPIT.Memory(Memory=Memory,Infor="Before HapMap")
   #Convert HapMap to numerical
   print(paste("Converting genotype...",sep=""))
-  hm=GAPIT.HapMap(G,SNP.effect=SNP.effect,SNP.impute=SNP.impute, Create.indicator = Create.indicator, Major.allele.zero = Major.allele.zero)
+  hm=GAPIT.HapMap(G,SNP.effect=SNP.effect,SNP.impute=SNP.impute, Create.indicator = Create.indicator, Major.allele.zero = Major.allele.zero, ncpus=ncpus)
   Timmer=GAPIT.Timmer(Timmer=Timmer,Infor="after HapMap")
   Memory=GAPIT.Memory(Memory=Memory,Infor="after HapMap")
   #Extracting SNP for LD plot
@@ -222,7 +222,7 @@ if(!byData & byFile)
                             seed=seed,SNP.fraction=SNP.fraction,SNP.effect=SNP.effect,SNP.impute=SNP.impute,genoFormat=genoFormat,
                             file.GD=file.GD,file.Ext.GD=file.Ext.GD,file.GM=file.GM,file.Ext.GM=file.Ext.GM,
                             file.fragment=file.fragment,file=file,frag=frag,
-                            LD.chromosome=LD.chromosome,LD.location=LD.location,LD.range=LD.range, Create.indicator = Create.indicator, Major.allele.zero = Major.allele.zero)
+                            LD.chromosome=LD.chromosome,LD.location=LD.location,LD.range=LD.range, Create.indicator = Create.indicator, Major.allele.zero = Major.allele.zero, ncpus=ncpus)
          Timmer=GAPIT.Timmer(Timmer=Timmer,Infor="After Fragment")
          Memory=GAPIT.Memory(Memory=Memory,Infor="After Fragment")
  

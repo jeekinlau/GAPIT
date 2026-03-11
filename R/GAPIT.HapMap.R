@@ -1,5 +1,5 @@
 `GAPIT.HapMap` <-
-function(G,SNP.effect="Add",SNP.impute="Middle",heading=TRUE, Create.indicator = FALSE, Major.allele.zero = FALSE){
+function(G,SNP.effect="Add",SNP.impute="Middle",heading=TRUE, Create.indicator = FALSE, Major.allele.zero = FALSE, ncpus=1){
     #Object: To convert character SNP genotpe to numerical
     #Output: Coresponding numerical value
     #Authors: Feng Tian and Zhiwu Zhang
@@ -32,10 +32,10 @@ function(G,SNP.effect="Add",SNP.impute="Middle",heading=TRUE, Create.indicator =
     # Gtest=G[-1,-(1:11)]
     # print(Gtest[1:5,1:6])
     if(heading){
-        if(!Create.indicator) GD= apply(G[-1,-(1:11)],1,function(one) GAPIT.Numericalization(one,bit=bit,effect=SNP.effect,impute=SNP.impute, Major.allele.zero=Major.allele.zero))
+        if(!Create.indicator) GD= GAPIT.Numericalization.Batch(G[-1,-(1:11)],bit=bit,effect=SNP.effect,impute=SNP.impute, Create.indicator = Create.indicator, Major.allele.zero=Major.allele.zero, ncpus=ncpus)
         if(Create.indicator) GD= t(G[-1,-(1:11)])
     }else{
-        if(!Create.indicator) GD= apply(G[  ,-(1:11)],1,function(one) GAPIT.Numericalization(one,bit=bit,effect=SNP.effect,impute=SNP.impute, Major.allele.zero=Major.allele.zero))
+        if(!Create.indicator) GD= GAPIT.Numericalization.Batch(G[  ,-(1:11)],bit=bit,effect=SNP.effect,impute=SNP.impute, Create.indicator = Create.indicator, Major.allele.zero=Major.allele.zero, ncpus=ncpus)
         if(Create.indicator) GD= t(G[ ,-(1:11)])
     }
     

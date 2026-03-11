@@ -147,3 +147,64 @@ if(len<=1)
 }#end of GAPIT.Numericalization function
 #=============================================================================================
 
+`GAPIT.Numericalization.Batch` <-
+function(X, bit = 2, effect = "Add", impute = "Middle", Create.indicator = FALSE,
+         Major.allele.zero = FALSE, ncpus = 1) {
+#Object: Apply GAPIT.Numericalization across SNP rows with optional parallelism
+#Output: Numeric genotype matrix with taxa in rows and SNPs in columns
+
+if(is.null(X)) return(NULL)
+
+X=as.matrix(X)
+if(nrow(X)==0 | ncol(X)==0) return(matrix(numeric(0), nrow = ncol(X), ncol = nrow(X)))
+
+worker <- function(one) {
+  GAPIT.Numericalization(
+    x = one,
+    bit = bit,
+    effect = effect,
+    impute = impute,
+    Create.indicator = Create.indicator,
+    Major.allele.zero = Major.allele.zero,
+    byRow = TRUE
+  )
+}
+
+numericalize_fn <- GAPIT.Numericalization
+
+ncpus=as.integer(ncpus)
+if(is.na(ncpus) | ncpus < 1) ncpus=1
+
+if(ncpus == 1 | nrow(X) < 2) {
+  out=lapply(seq_len(nrow(X)), function(i) worker(X[i, ]))
+} else {
+  out <- try({
+    cl=parallel::makeCluster(ncpus)
+    on.exit(parallel::stopCluster(cl), add = TRUE)
+    parallel::clusterExport(
+      cl,
+      varlist = c("X", "bit", "effect", "impute", "Create.indicator", "Major.allele.zero", "numericalize_fn"),
+      envir = environment()
+    )
+    parallel::parLapply(cl, seq_len(nrow(X)), function(i) {
+      numericalize_fn(
+        x = X[i, ],
+        bit = bit,
+        effect = effect,
+        impute = impute,
+        Create.indicator = Create.indicator,
+        Major.allele.zero = Major.allele.zero,
+        byRow = TRUE
+      )
+    })
+  }, silent = TRUE)
+
+  if(inherits(out, "try-error")) {
+    out=lapply(seq_len(nrow(X)), function(i) worker(X[i, ]))
+  }
+}
+
+do.call(cbind, out)
+}
+#=============================================================================================
+

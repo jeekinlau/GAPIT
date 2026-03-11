@@ -2,7 +2,7 @@
 function(file.path=NULL,file.from=NULL, file.to=NULL,file.total=NULL,file.G=NULL,
                           file.Ext.G=NULL,seed=123,SNP.fraction=1,SNP.effect="Add",SNP.impute="Middle",
                           genoFormat=NULL, file.GD=NULL, file.Ext.GD=NULL, file.GM=NULL, file.Ext.GM=NULL, file.fragment=NULL,
-                          file=1,frag=1,LD.chromosome=NULL,LD.location=NULL,LD.range=NULL, Create.indicator = FALSE, Major.allele.zero = FALSE){
+                          file=1,frag=1,LD.chromosome=NULL,LD.location=NULL,LD.range=NULL, Create.indicator = FALSE, Major.allele.zero = FALSE, ncpus=1){
 #Object: To load SNPs on a (frag)ment in file (this is to replace sampler)
 #Output: genotype data sampled
 #Authors: Alex Lipka and Zhiwu Zhang
@@ -70,7 +70,7 @@ if(genoFormat=="hapmap"){
         
 
         print("Call hapmap from fragment")      
-        hm=GAPIT.HapMap(G,SNP.effect=SNP.effect,SNP.impute=SNP.impute,heading=heading, Create.indicator = Create.indicator, Major.allele.zero = Major.allele.zero)
+        hm=GAPIT.HapMap(G,SNP.effect=SNP.effect,SNP.impute=SNP.impute,heading=heading, Create.indicator = Create.indicator, Major.allele.zero = Major.allele.zero, ncpus=ncpus)
 
         #print("Extracting snps for LD plot...")
         #Extract SNPs for LD plot
